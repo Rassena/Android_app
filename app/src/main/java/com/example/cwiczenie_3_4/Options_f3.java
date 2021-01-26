@@ -11,11 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import java.util.ArrayList;
 
 import static android.graphics.Color.BLACK;
 import static android.graphics.Color.GREEN;
@@ -29,7 +26,7 @@ import static android.graphics.Color.YELLOW;
  * create an instance of this fragment.
  *
  */
-public class Options_f3 extends Fragment {
+public class Options_f3 extends Fragment implements AdapterView.OnItemSelectedListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -89,15 +86,13 @@ public class Options_f3 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         super.onViewCreated(view, savedInstanceState);
-        this.getView().setBackgroundColor(BLACK);
-
 
         Spinner opcje = (Spinner) getActivity().findViewById(R.id.spinner);
         if(opcje !=null){
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item,lista);
+            opcje.setOnItemSelectedListener(this);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item,lista);
             opcje.setAdapter(adapter);
         }
-
     }
 
 
@@ -105,46 +100,30 @@ public class Options_f3 extends Fragment {
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         switch (p[position]){
             case "BLACK":
-                czarneTlo();
+                this.getView().setBackgroundColor(BLACK);
                 break;
             case "WHITE":
-                bialeTlo();
+                this.getView().setBackgroundColor(WHITE);
                 break;
             case "YELLOW":
-                zolteTlo();
+                this.getView().setBackgroundColor(YELLOW);
                 break;
             case "GREEN":
-                zieloneTlo();
+                this.getView().setBackgroundColor(GREEN);
                 break;
             case "RED":
-                czerwoneTlo();
+                this.getView().setBackgroundColor(RED);
                 break;
             default:
+                this.getView().setBackgroundColor(WHITE);
                 break;
         }
     }
 
-    public void czarneTlo(){
-        this.getWindow().getDecorView().setBackgroundColor(BLACK);
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
-    public void bialeTlo(){
-        this.getWindow().getDecorView().setBackgroundColor(WHITE);
-    }
-
-    public void zolteTlo(){
-        this.getWindow().getDecorView().setBackgroundColor(YELLOW);
-    }
-
-    public void zieloneTlo(){
-        this.getWindow().getDecorView().setBackgroundColor(GREEN);
-    }
-
-    public void czerwoneTlo(){
-        this.getWindow().getDecorView().setBackgroundColor(RED);
-    }
-
-
-
 
 
 }
