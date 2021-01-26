@@ -1,10 +1,27 @@
 package com.example.cwiczenie_3_4;
 
+import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+
+import static android.graphics.Color.BLACK;
+import static android.graphics.Color.GREEN;
+import static android.graphics.Color.RED;
+import static android.graphics.Color.WHITE;
+import static android.graphics.Color.YELLOW;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,6 +39,12 @@ public class Options_f3 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    String[] lista = {"WHITE","RED","GREEN","YELLOW","BLACK"};
+    String[] p ={"WHITE","RED","GREEN","YELLOW","BLACK"};
+
+
+
 
     /**
      * Use this factory method to create a new instance of
@@ -60,4 +83,68 @@ public class Options_f3 extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_options_f3, container, false);
     }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        super.onViewCreated(view, savedInstanceState);
+        this.getView().setBackgroundColor(BLACK);
+
+
+        Spinner opcje = (Spinner) getActivity().findViewById(R.id.spinner);
+        if(opcje !=null){
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity().getApplicationContext(), android.R.layout.simple_spinner_item,lista);
+            opcje.setAdapter(adapter);
+        }
+
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        switch (p[position]){
+            case "BLACK":
+                czarneTlo();
+                break;
+            case "WHITE":
+                bialeTlo();
+                break;
+            case "YELLOW":
+                zolteTlo();
+                break;
+            case "GREEN":
+                zieloneTlo();
+                break;
+            case "RED":
+                czerwoneTlo();
+                break;
+            default:
+                break;
+        }
+    }
+
+    public void czarneTlo(){
+        this.getWindow().getDecorView().setBackgroundColor(BLACK);
+    }
+    public void bialeTlo(){
+        this.getWindow().getDecorView().setBackgroundColor(WHITE);
+    }
+
+    public void zolteTlo(){
+        this.getWindow().getDecorView().setBackgroundColor(YELLOW);
+    }
+
+    public void zieloneTlo(){
+        this.getWindow().getDecorView().setBackgroundColor(GREEN);
+    }
+
+    public void czerwoneTlo(){
+        this.getWindow().getDecorView().setBackgroundColor(RED);
+    }
+
+
+
+
+
 }
