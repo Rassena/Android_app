@@ -253,7 +253,7 @@ public class OpenItem_f1 extends Fragment {
             }
         });
 
-        Button buttonDial = view.findViewById(R.id.button_mod_f);
+        Button buttonDial = view.findViewById(R.id.button_dial_f);
         buttonDial.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
