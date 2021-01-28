@@ -70,11 +70,6 @@ public class Options_f1 extends Fragment {
         return inflater.inflate(R.layout.fragment_options_f1, container, false);
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.checkable_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -96,85 +91,8 @@ public class Options_f1 extends Fragment {
             public void onStopTrackingTouch(SeekBar seekBar) {
 
             }
+
         });
     }
 
-    private void setTextViewStyle(TextView view, boolean isBold){
-        if (view == null)
-            return;
-        Typeface oldTypeface = view.getTypeface() != null ? view.getTypeface() :
-                (isBold ? Typeface.DEFAULT_BOLD : Typeface.DEFAULT);
-
-        view.setTypeface(
-                Typeface.create(oldTypeface, isBold ? Typeface.BOLD : Typeface.NORMAL)
-        );
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        TextView text = getActivity().findViewById(R.id.textView2);
-        Typeface typeface = text.getTypeface() != null ? text.getTypeface() : Typeface.DEFAULT;
-
-        switch (item.getItemId()) {
-
-            case R.id.checkable_item1:
-                if(!item.isChecked())
-                {
-                    if(typeface.isBold())
-                    {
-                        text.setTypeface(null,Typeface.BOLD_ITALIC);
-                    }
-                    else
-                    {
-                        text.setTypeface(null, Typeface.ITALIC);
-                    }
-
-                }
-                else
-                {
-                    if(typeface.isBold())
-                    {
-                        text.setTypeface(null,Typeface.BOLD);
-                    }
-                    else
-                    {
-                        text.setTypeface(null, Typeface.NORMAL);
-                    }
-                }
-                item.setChecked(!item.isChecked());
-                return true;
-
-            case R.id.checkable_item2:
-
-                if(!item.isChecked())
-                {
-                    if(typeface.isItalic())
-                    {
-                        text.setTypeface(typeface,Typeface.BOLD_ITALIC);
-                    }
-                    else
-                    {
-                        text.setTypeface(typeface, Typeface.BOLD);
-                    }
-
-                }
-                else
-                {
-                    if(typeface.isItalic())
-                    {
-                        text.setTypeface(typeface,Typeface.ITALIC);
-                    }
-                    else
-                    {
-                        text.setTypeface(null, Typeface.NORMAL);
-                    }
-                }
-                item.setChecked(!item.isChecked());
-                return true;
-            default:
-                return false;
-
-        }
-    }
 }

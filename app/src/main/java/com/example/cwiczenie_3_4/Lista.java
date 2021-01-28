@@ -24,11 +24,18 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-    public class Lista extends AppCompatActivity {
+    public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemListener {
 
 
         MyAdapter adapter;
         ListView lista;
+
+        @Override
+        public void onOpenInputSent(Bundle bundle) {
+
+        }
+
+
 
 
         private class LVitem{

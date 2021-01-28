@@ -1,16 +1,24 @@
 package com.example.cwiczenie_3_4;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Lista_f1#newInstance} factory method to
+ * Use the {@link Options_f1#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class Lista_f1 extends Fragment {
@@ -34,7 +42,7 @@ public class Lista_f1 extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Lista_f1.
+     * @return A new instance of fragment Options_f1.
      */
     // TODO: Rename and change types and number of parameters
     public static Lista_f1 newInstance(String param1, String param2) {
@@ -61,4 +69,8 @@ public class Lista_f1 extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_lista_f1, container, false);
     }
+
+
+
+
 }

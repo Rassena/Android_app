@@ -22,7 +22,7 @@ public class Options extends AppCompatActivity {
     private static final int NUM_PAGES = 3;
 
     private ViewPager2 viewPager;
-
+    private Menu menu;
     private FragmentStateAdapter pagerAdapter;
 
     @Override
