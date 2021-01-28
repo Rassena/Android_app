@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -244,9 +245,25 @@ public class OpenItem_f1 extends Fragment {
             }
         });
 
+        Button buttonMod = view.findViewById(R.id.button_mod_f);
+        buttonMod.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                modify_f(v);
+            }
+        });
+
+        Button buttonDial = view.findViewById(R.id.button_mod_f);
+        buttonDial.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dial_f(v);
+            }
+        });
+
     }
 
-    public void Modify(View view) {
+    public void modify_f(View view) {
         Intent resultIntent = new Intent();
 
 
@@ -271,8 +288,9 @@ public class OpenItem_f1 extends Fragment {
         getActivity().onBackPressed();
     }
 
-    public void dial(View view) {
+    public void dial_f(View view) {
         Intent intent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + NumberView.getText().toString()));
+        Toast.makeText(getActivity().getApplicationContext(), "Open Dial", Toast.LENGTH_SHORT).show();
         startActivity(intent);
     }
 

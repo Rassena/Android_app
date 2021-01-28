@@ -12,8 +12,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.RatingBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,18 +29,152 @@ import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 
-    public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemListener {
+    public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemListener, Lista_f1.ListFragmentListener {
 
 
-        MyAdapter adapter;
+       // MyAdapter adapter;
         ListView lista;
+        private TextView red;
+        private TextView green;
+        private TextView blue;
+
+        private int ired;
+        private int igreen;
+        private int iblue;
+
+        private RadioGroup rg;
+
+        private SeekBar seekBarRed;
+        private SeekBar seekBarGreen;
+        private SeekBar seekBarBlue;
+        private View view;
+
+        private RatingBar rb;
+
+        private int color;
+        private EditText NameView;
+        private EditText NumberView;
+        private EditText AgeView;
+        private int RecordPosition;
+        int gender;
 
         @Override
         public void onOpenInputSent(Bundle bundle) {
+            ListView lista3 = (ListView) findViewById(R.id.listView);
+
+            Lista_f1.MyAdapter adapter = (Lista_f1.MyAdapter) lista3.getAdapter();
+
+            int elemposition = bundle.getInt("position", 0);
+
+            ListElement Element = ItemList.get(elemposition);
+
+            Element.name = bundle.getString("name");
+            Element.number = bundle.getString("number");
+            Element.BlueProgress = bundle.getInt("blueprogress", 0);
+            Element.RedProgress = bundle.getInt("redprogress", 0);
+            Element.GreenProgress = bundle.getInt("greenprogress", 0);
+            Element.rating = bundle.getFloat("rating", 0);
+
+            int test = bundle.getInt("gender",0);
+            switch (test) {
+                case R.id.radioButtonWomen_open:
+                    Element.gender =0;
+                    break;
+                case R.id.radioButtonMen_open:
+                    Element.gender =1;
+                    break;
+                case R.id.radioButtonAgender_open:
+                    Element.gender =2;
+                    break;
+                case R.id.radioButtonTrap_open:
+                    Element.gender =3;
+                    break;
+                case R.id.radioButtonReverseTrap_open:
+                    Element.gender =4;
+                    break;
+                case R.id.radioButtonNonBinary_open:
+                    Element.gender =5;
+                    break;
+            }
+            ItemList.set(elemposition, Element);
+            SaveList();
 
         }
 
+        @Override
+        public void onListInputSent(Bundle bundle) {
 
+            seekBarRed = (SeekBar) findViewById(R.id.SeekBarRed_open);
+            seekBarGreen = (SeekBar) findViewById(R.id.SeekBarGreen_open);
+            seekBarBlue = (SeekBar) findViewById(R.id.SeekBarBlue_open);
+
+
+            red = (TextView) findViewById(R.id.textView11);
+            green = (TextView) findViewById(R.id.textView12);
+            blue = (TextView) findViewById(R.id.textView13);
+
+            view = (View) findViewById(R.id.ColorView_open);
+
+            NameView = (EditText) findViewById(R.id.Name_Open);
+            NumberView = (EditText) findViewById(R.id.Number_Open);
+            AgeView = (EditText) findViewById(R.id.Age_Open);
+
+            rg = (RadioGroup) findViewById(R.id.radiogroup_open);
+
+            rb = (RatingBar) findViewById(R.id.ratingBar_open);
+
+            NameView.setText(bundle.getString("name"));
+            NumberView.setText(bundle.getString ("number"));
+            AgeView.setText(bundle.getString ("age"));
+
+            RecordPosition = bundle.getInt ("position", 0);
+
+            ired = bundle.getInt ("redprogress", 0);
+            iblue = bundle.getInt ("blueprogress", 0);
+            igreen = bundle.getInt ("greenprogress", 0);
+            seekBarRed.setProgress(ired);
+            seekBarBlue.setProgress(iblue);
+            seekBarGreen.setProgress(igreen);
+
+
+
+
+            rb.setRating(bundle.getFloat ("rating", 0));
+
+            color = Color.rgb(ired, igreen, iblue);
+            view.setBackgroundColor(color);
+
+
+            switch (bundle.getInt ("gender", 0)) {
+                case 0:
+                    ((RadioButton) findViewById(R.id.radioButtonWomen_open)).setChecked(true);
+                    break;
+                case 1:
+                    ((RadioButton) findViewById(R.id.radioButtonMen_open)).setChecked(true);
+                    break;
+                case 2:
+                    ((RadioButton) findViewById(R.id.radioButtonAgender_open)).setChecked(true);
+                    break;
+                case 3:
+                    ((RadioButton) findViewById(R.id.radioButtonTrap_open)).setChecked(true);
+                    break;
+                case 4:
+                    ((RadioButton) findViewById(R.id.radioButtonReverseTrap_open)).setChecked(true);
+                    break;
+                case 5:
+                    ((RadioButton) findViewById(R.id.radioButtonNonBinary_open)).setChecked(true);
+                    break;
+            }
+
+
+            rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    RadioButton rb = (RadioButton) findViewById(checkedId);
+
+                    Toast.makeText(getApplicationContext(), rb.getText(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
 
 
         private class LVitem{
@@ -56,6 +195,11 @@ import java.util.ArrayList;
             int gender;
             float rating;
 
+            public ListElement()
+            {
+
+            }
+
         /*
         @Override
         public int compareTo(ListElement o) {
@@ -73,7 +217,9 @@ import java.util.ArrayList;
         ArrayList<ListElement> ItemList;
 
 
-        private int color;
+
+
+        /*
 
         public class MyAdapter extends BaseAdapter {
 
@@ -159,6 +305,7 @@ import java.util.ArrayList;
                     }
                 });
 
+
                 listitemView.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         Intent intent = new Intent(Lista.this, OpenItem.class);
@@ -179,9 +326,13 @@ import java.util.ArrayList;
                     }
                 });
 
+
+
                 return listitemView;
             }
         }
+
+        */
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
@@ -192,9 +343,9 @@ import java.util.ArrayList;
             getSupportActionBar().setTitle(R.string.Lista);
 
             LoadData();
-            adapter = new MyAdapter(ItemList);
-            lista = (ListView) findViewById(R.id.listView);
-            lista.setAdapter(adapter);
+            //adapter = new MyAdapter(ItemList);
+           // lista = (ListView) findViewById(R.id.listView);
+           // lista.setAdapter(adapter);
 
             FloatingActionButton Button = findViewById(R.id.floatingActionButton);
             Button.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +358,8 @@ import java.util.ArrayList;
 
         protected void onStart(){
             super.onStart();
-            adapter.notifyDataSetChanged();
+            //adapter.notifyDataSetChanged();
+            LoadData();
         }
 
 

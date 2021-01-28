@@ -258,23 +258,13 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <Button
-                    android:id="@+id/button7"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:onClick="powrot"
-                    android:text="@string/back" />
 
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/button"
+                    android:id="@+id/button_mod_f"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="Modify"
+                    android:onClick="modify_f"
                     android:text="@string/Modyfikuj" />
 
                 <Space
@@ -283,10 +273,10 @@
                     android:layout_weight="1" />
 
                 <Button
-                    android:id="@+id/button2"
+                    android:id="@+id/button_dial_f"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:onClick="dial"
+                    android:onClick="dial_f"
                     android:text="@string/Dial" />
 
                 <Space
