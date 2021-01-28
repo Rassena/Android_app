@@ -264,23 +264,23 @@ public class OpenItem_f1 extends Fragment {
     }
 
     public void modify_f(View view) {
-        Intent resultIntent = new Intent();
+        Bundle bundle = new Bundle();
 
 
-        resultIntent.putExtra("name", NameView.getText().toString());
-        resultIntent.putExtra("number", NumberView.getText().toString());
-        resultIntent.putExtra("age", AgeView.getText().toString());
-        resultIntent.putExtra("redprogress", seekBarRed.getProgress());
-        resultIntent.putExtra("blueprogress", seekBarBlue.getProgress());
-        resultIntent.putExtra("greenprogress", seekBarGreen.getProgress());
+
+        bundle.putString("name", NameView.getText().toString());
+        bundle.putString("number", NumberView.getText().toString());
+        bundle.putString("age", AgeView.getText().toString());
+        bundle.putInt("redprogress", seekBarRed.getProgress());
+        bundle.putInt("blueprogress", seekBarBlue.getProgress());
+        bundle.putInt("greenprogress", seekBarGreen.getProgress());
         int test = rg.getCheckedRadioButtonId();
-        resultIntent.putExtra("gender", test);
-        resultIntent.putExtra("rating", rb.getRating());
-        resultIntent.putExtra("position", RecordPosition);
+        bundle.putInt("gender", test);
+        bundle.putFloat("rating", rb.getRating());
+        bundle.putInt("position", RecordPosition);
 
-        getActivity().setResult(getActivity().RESULT_OK, resultIntent);
+        listener.onOpenInputSent(bundle);
         Toast.makeText(getActivity().getApplicationContext(), "Zapisano zmiany", Toast.LENGTH_SHORT).show();
-        getActivity().finish();
     }
 
 

@@ -60,9 +60,9 @@ import java.util.ArrayList;
 
         @Override
         public void onOpenInputSent(Bundle bundle) {
-            ListView lista3 = (ListView) findViewById(R.id.listView);
+            ListView lista = (ListView) findViewById(R.id.listView);
 
-            Lista_f1.MyAdapter adapter = (Lista_f1.MyAdapter) lista3.getAdapter();
+            Lista_f1.MyAdapter adapter = (Lista_f1.MyAdapter) lista.getAdapter();
 
             int elemposition = bundle.getInt("position", 0);
 
@@ -97,8 +97,10 @@ import java.util.ArrayList;
                     break;
             }
             ItemList.set(elemposition, Element);
+            adapter.notifyDataSetChanged();
             SaveList();
-
+            LoadData();
+            adapter.notifyDataSetChanged();
         }
 
         @Override
@@ -215,8 +217,6 @@ import java.util.ArrayList;
         }
 
         ArrayList<ListElement> ItemList;
-
-
 
 
         /*
