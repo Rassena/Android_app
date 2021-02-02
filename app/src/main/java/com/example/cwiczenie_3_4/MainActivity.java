@@ -2,7 +2,9 @@ package com.example.cwiczenie_3_4;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.ListFragment;
 
+import android.app.Application;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -17,6 +19,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -27,18 +30,27 @@ import static android.graphics.Color.RED;
 import static android.graphics.Color.WHITE;
 import static android.graphics.Color.YELLOW;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener, Lista_f1.ListFragmentInteractionListener {
 
     String[] lista = {"WHITE","RED","GREEN","YELLOW","BLACK"};
     String[] p ={"WHITE","RED","GREEN","YELLOW","BLACK"};
 
     ArrayList<Lista.ListElement> ItemList;
 
+    static MyRepository myRepository;
+    Lista_f1 myListFragment;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         LoadData();
+
+
+        if (savedInstanceState==null)
+            myRepository = new MyRepository((Application)getApplicationContext());
+        myListFragment =  (Lista_f1) getSupportFragmentManager().findFragmentById(R.id.fragment2);
 
         Spinner opcje = (Spinner) findViewById(R.id.spinner);
         if(opcje !=null){
@@ -191,15 +203,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Lista.ListElement Element = new Lista.ListElement();
+        //Lista.ListElement Element = new Lista.ListElement();
+        ItemData Element = new ItemData();
+
         if (requestCode == 1) {
             if (resultCode == RESULT_OK) {
                 Element.name = data.getStringExtra("name");
                 Element.number = data.getStringExtra("number");
                 Element.age = data.getStringExtra("age");
-                Element.BlueProgress = data.getIntExtra("blueprogress", 0);
-                Element.RedProgress = data.getIntExtra("redprogress", 0);
-                Element.GreenProgress = data.getIntExtra("greenprogress", 0);
+                Element.blueProgress = data.getIntExtra("blueprogress", 0);
+                Element.redProgress = data.getIntExtra("redprogress", 0);
+                Element.greenProgress = data.getIntExtra("greenprogress", 0);
                 Element.rating = data.getFloatExtra("rating", 0);
                 int test = data.getIntExtra("gender", 0);
                 switch (test) {
@@ -222,9 +236,23 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                         Element.gender = 5;
                         break;
                 }
-                ItemList.add(Element);
+                //ItemList.add(Element);
+
+                myRepository.insertItem(Element);
+                //myListFragment.setList(getRepositoryList());
+
+
                 SaveList();
             }
         }
+    }
+
+    @Override
+    public void onDeleteItem(ItemData item) {
+
+    }
+
+    public List<ItemData> getRepositoryList(){
+        return myRepository.getDataList();
     }
 }

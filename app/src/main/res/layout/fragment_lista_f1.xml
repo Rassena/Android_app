@@ -13,12 +13,12 @@
         android:gravity="center"
         android:text="@string/Lista" />
 
-    <ListView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-    </ListView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

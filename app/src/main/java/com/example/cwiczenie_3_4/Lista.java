@@ -1,7 +1,9 @@
 package com.example.cwiczenie_3_4;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.ListFragment;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,36 +30,42 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
-    public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemListener, Lista_f1.ListFragmentListener {
+public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemListener, Lista_f1.ListFragmentListener, Lista_f1.ListFragmentInteractionListener {
 
 
-       // MyAdapter adapter;
-        ListView lista;
-        private TextView red;
-        private TextView green;
-        private TextView blue;
+   // MyAdapter adapter;
+    ListView lista;
+    private TextView red;
+    private TextView green;
+    private TextView blue;
 
-        private int ired;
-        private int igreen;
-        private int iblue;
+    private int ired;
+    private int igreen;
+    private int iblue;
 
-        private RadioGroup rg;
+    private RadioGroup rg;
 
-        private SeekBar seekBarRed;
-        private SeekBar seekBarGreen;
-        private SeekBar seekBarBlue;
-        private View view;
+    private SeekBar seekBarRed;
+    private SeekBar seekBarGreen;
+    private SeekBar seekBarBlue;
+    private View view;
 
-        private RatingBar rb;
+    private RatingBar rb;
 
-        private int color;
-        private EditText NameView;
-        private EditText NumberView;
-        private EditText AgeView;
-        private int RecordPosition;
-        int gender;
-        ArrayList<ListElement> ItemList;
+    private int color;
+    private EditText NameView;
+    private EditText NumberView;
+    private EditText AgeView;
+    private int RecordPosition;
+    int gender;
+    ArrayList<ListElement> ItemList;
+    List<ItemData> itemList_sql;
+    private MyRepository myRep;
+
+    static MyRepository myRepository;
+    Lista_f1 myListFragment;
 
 
         @Override
@@ -68,13 +76,15 @@ import java.util.ArrayList;
 
             int elemposition = bundle.getInt("position", 0);
 
-            ListElement Element = ItemList.get(elemposition);
+            //ListElement Element = ItemList.get(elemposition);
+            ItemData Element = itemList_sql.get(elemposition);
+
 
             Element.name = bundle.getString("name");
             Element.number = bundle.getString("number");
-            Element.BlueProgress = bundle.getInt("blueprogress", 0);
-            Element.RedProgress = bundle.getInt("redprogress", 0);
-            Element.GreenProgress = bundle.getInt("greenprogress", 0);
+            Element.blueProgress = bundle.getInt("blueprogress", 0);
+            Element.redProgress = bundle.getInt("redprogress", 0);
+            Element.greenProgress = bundle.getInt("greenprogress", 0);
             Element.rating = bundle.getFloat("rating", 0);
 
             int test = bundle.getInt("gender",0);
@@ -98,11 +108,14 @@ import java.util.ArrayList;
                     Element.gender =5;
                     break;
             }
+            /*
             ItemList.set(elemposition, Element);
             adapter.notifyDataSetChanged();
             SaveList();
             LoadData();
             adapter.notifyDataSetChanged();
+             */
+            itemList_sql.set(elemposition,Element);
 
 
         }
@@ -206,18 +219,6 @@ import java.util.ArrayList;
 
             }
 
-        /*
-        @Override
-        public int compareTo(ListElement o) {
-            String comparename =((ListElement)o).name;
-            int byname = comparename.compareTo(this.name);
-            if(byname!=0)
-                return 0;
-            String compareage =((ListElement)o).name;
-            int byage = compareage.compareTo(this.age);
-            return byage;
-        }
-         */
         }
 
 
@@ -229,6 +230,10 @@ import java.util.ArrayList;
 
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setTitle(R.string.Lista);
+
+            if (savedInstanceState==null)
+                myRepository = new MyRepository((Application)getApplicationContext());
+            myListFragment =  (Lista_f1) getSupportFragmentManager().findFragmentById(R.id.fragment2);
 
             LoadData();
             //adapter = new MyAdapter(ItemList);
@@ -244,11 +249,14 @@ import java.util.ArrayList;
             });
         }
 
+        /*
         protected void onStart(){
             super.onStart();
             //adapter.notifyDataSetChanged();
             LoadData();
         }
+
+         */
 
 
         public void powrotDoMain(View view){
@@ -264,15 +272,17 @@ import java.util.ArrayList;
         @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
             super.onActivityResult(requestCode, resultCode, data);
-            ListElement Element = new ListElement();
+            //ListElement Element = new ListElement();
+            ItemData Element = new ItemData();
+
             if (requestCode == 1) {
                 if (resultCode == RESULT_OK) {
                     Element.name = data.getStringExtra("name");
                     Element.number = data.getStringExtra("number");
                     Element.age = data.getStringExtra("age");
-                    Element.BlueProgress = data.getIntExtra("blueprogress", 0);
-                    Element.RedProgress = data.getIntExtra("redprogress", 0);
-                    Element.GreenProgress = data.getIntExtra("greenprogress", 0);
+                    Element.blueProgress = data.getIntExtra("blueprogress", 0);
+                    Element.redProgress = data.getIntExtra("redprogress", 0);
+                    Element.greenProgress = data.getIntExtra("greenprogress", 0);
                     Element.rating = data.getFloatExtra("rating", 0);
 
                     switch (data.getIntExtra("gender", 0)) {
@@ -296,8 +306,10 @@ import java.util.ArrayList;
                             break;
                     }
 
-                    ItemList.add(Element);
-                    SaveList();
+                    //ItemList.add(Element);
+                    itemList_sql.add(Element);
+                    //SaveList();
+                    myRep.insertItem(Element);
                 }
             }
             if (requestCode == 2) {
@@ -306,9 +318,9 @@ import java.util.ArrayList;
                     Element.name = data.getStringExtra("name");
                     Element.number = data.getStringExtra("number");
                     Element.age = data.getStringExtra("age");
-                    Element.BlueProgress = data.getIntExtra("blueprogress", 0);
-                    Element.RedProgress = data.getIntExtra("redprogress", 0);
-                    Element.GreenProgress = data.getIntExtra("greenprogress", 0);
+                    Element.blueProgress = data.getIntExtra("blueprogress", 0);
+                    Element.redProgress = data.getIntExtra("redprogress", 0);
+                    Element.greenProgress = data.getIntExtra("greenprogress", 0);
                     Element.rating = data.getFloatExtra("rating", 0);
                     int test = data.getIntExtra("gender",0);
                     switch (test) {
@@ -331,7 +343,8 @@ import java.util.ArrayList;
                             Element.gender =5;
                             break;
                     }
-                    ItemList.set(elemposition, Element);
+                    //ItemList.set(elemposition, Element);
+                    itemList_sql.set(elemposition, Element);
                     SaveList();
 
                 }
@@ -341,26 +354,41 @@ import java.util.ArrayList;
 
         private void SaveList()
         {
+            /*
             SharedPreferences sharedPreferences = getSharedPreferences( "shared preferences", MODE_PRIVATE);
             SharedPreferences.Editor editor = sharedPreferences.edit();
             Gson gson = new Gson();
             String json = gson.toJson(ItemList);
             editor.putString("List",json);
             editor.apply();
+            */
         }
         private void LoadData()
         {
+            /*
             SharedPreferences sharedPreferences = getSharedPreferences( "shared preferences", MODE_PRIVATE);
-
             Gson gson = new Gson();
             String json = sharedPreferences.getString("List" ,null);
             Type type = new TypeToken<ArrayList<ListElement>>() {}.getType();
             ItemList = gson.fromJson(json,type);
+
+             */
             if(ItemList == null)
             {
                 ItemList = new ArrayList<>();
             }
 
+
+
+        }
+
+        public void onDeleteItem(ItemData item){
+            myRepository.deleteItem(item);
+            myListFragment.setList(getRepositoryList());
+        }
+
+        public List<ItemData> getRepositoryList(){
+            return myRepository.getDataList();
         }
 
         @Override
@@ -373,5 +401,6 @@ import java.util.ArrayList;
             }
             return (super.onOptionsItemSelected(menuItem));
         }
+
 
     }

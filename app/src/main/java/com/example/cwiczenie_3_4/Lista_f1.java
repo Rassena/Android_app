@@ -10,6 +10,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -29,6 +31,7 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -50,6 +53,12 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
     ArrayList<ListElement> ItemList;
     private int color;
 
+
+    private ListFragmentInteractionListener mListener;
+    private RecyclerView getmRecyclerView;
+    private MyRVAdapter mAdapter;
+
+
     @Override
     public void onOpenInputSent(Bundle bundle) {
         adapter.notifyDataSetChanged();
@@ -58,7 +67,22 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
     public interface ListFragmentListener {
         void onListInputSent(Bundle bundle);
     }
+
+    public interface ListFragmentInteractionListener{
+        void onDeleteItem(ItemData item);
+        List<ItemData> getRepositoryList();
+    }
+
+    void setList(List<ItemData>list){
+        mAdapter.setItemList(list);
+    }
+
+
     private ListFragmentListener listener;
+    private RecyclerView mRecyclerView;
+    private MyRVAdapter myRVAdapter;
+
+
 
     private class LVitem{
         TextView tv1;
@@ -249,26 +273,43 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lista_f1, container, false);
+        View view = inflater.inflate(R.layout.fragment_lista_f1, container, false);
+        if (view instanceof RecyclerView){
+            Context context = view.getContext();
+            mRecyclerView = (RecyclerView) view;
+            mRecyclerView.setLayoutManager((new LinearLayoutManager(context)));
+        }
+        return view;
     }
 
 
-    
+    public void onActivityCreated(@Nullable Bundle saverdInstanceState) {
+        super.onActivityCreated(saverdInstanceState);
+        mRecyclerView = getActivity().findViewById(R.id.listView);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        mAdapter =new MyRVAdapter(mListener);
+        mRecyclerView.setAdapter(mAdapter);
+        setList(mListener.getRepositoryList());
+    }
+
+
+    /*
     public void onStart(){
         super.onStart();
         LoadData();
         adapter = new MyAdapter(ItemList);
-        lista = (ListView) getActivity().findViewById(R.id.listView);
+     //   lista = (ListView) getActivity().findViewById(R.id.listView);
         lista.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
-
+     */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         LoadData();
         adapter = new MyAdapter(ItemList);
         lista = (ListView) getActivity().findViewById(R.id.listView);
+        //lista.setAdapter(adapter);
         //lista.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
 
@@ -361,8 +402,8 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
         }
         LoadData();
 
-        if (context instanceof ListFragmentListener) {
-            listener = (ListFragmentListener) context;
+        if (context instanceof ListFragmentInteractionListener) {
+            mListener = (ListFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement ListFragmentListener");
@@ -371,7 +412,7 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
     @Override
     public void onDetach() {
         super.onDetach();
-        listener = null;
+        mListener = null;
     }
 
 

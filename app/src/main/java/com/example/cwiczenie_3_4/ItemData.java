@@ -33,6 +33,9 @@ public class ItemData {
     @ColumnInfo(name = "blueProgress")
     public int blueProgress;
 
+    @ColumnInfo(name = "gender")
+    public int gender;
+
     @ColumnInfo(name = "rating")
     public float rating;
 
