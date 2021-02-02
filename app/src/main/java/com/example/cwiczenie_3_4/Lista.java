@@ -110,7 +110,6 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
             }
             /*
             ItemList.set(elemposition, Element);
-            adapter.notifyDataSetChanged();
             SaveList();
             LoadData();
             adapter.notifyDataSetChanged();
@@ -248,6 +247,8 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
                 }
             });
         }
+
+
 
         /*
         protected void onStart(){
