@@ -57,6 +57,8 @@ import java.util.ArrayList;
         private EditText AgeView;
         private int RecordPosition;
         int gender;
+        ArrayList<ListElement> ItemList;
+
 
         @Override
         public void onOpenInputSent(Bundle bundle) {
@@ -101,6 +103,8 @@ import java.util.ArrayList;
             SaveList();
             LoadData();
             adapter.notifyDataSetChanged();
+
+
         }
 
         @Override
@@ -216,123 +220,7 @@ import java.util.ArrayList;
          */
         }
 
-        ArrayList<ListElement> ItemList;
 
-
-        /*
-
-        public class MyAdapter extends BaseAdapter {
-
-            private LayoutInflater inflater = null;
-            boolean[] zazn_pozycje;
-            LVitem myLVitem;
-
-            MyAdapter(ArrayList<ListElement> lista) {
-                super();
-                zazn_pozycje = new boolean[lista.size()];
-                inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            }
-
-
-            @Override
-            public int getCount() {
-                return ItemList.size();
-            }
-
-            @Override
-            public Object getItem(int position) {
-                return position;
-            }
-
-            @Override
-            public long getItemId(int position) {
-                return position;
-            }
-
-            @Override
-            public View getView(int position, View listitemView, ViewGroup parent) {
-                if (listitemView==null) {
-                    listitemView = inflater.inflate(R.layout.list_row, null);
-                    myLVitem = new LVitem();
-                    myLVitem.tv1 = (TextView) listitemView.findViewById(R.id.row_tv1);
-                    myLVitem.tv2 = (TextView) listitemView.findViewById(R.id.row_tv2);
-                    myLVitem.img = (ImageView) listitemView.findViewById(R.id.row_image);
-                    myLVitem.Color = listitemView.findViewById(R.id.view_Row);
-
-                    listitemView.setTag(myLVitem);
-                }
-                else
-                    myLVitem = (LVitem) listitemView.getTag();
-
-                myLVitem.tv1.setText(ItemList.get(position).name);
-                myLVitem.tv2.setText("Wiek: "+ ItemList.get(position).age);
-
-                switch (ItemList.get(position).gender){
-                    case 0:
-                        myLVitem.img.setImageResource(R.drawable.female);
-                        break;
-                    case 1:
-                        myLVitem.img.setImageResource(R.drawable.male);
-                        break;
-                    case 2:
-                        myLVitem.img.setImageResource(R.drawable.agender);
-                        break;
-                    case 3:
-                        myLVitem.img.setImageResource(R.drawable.trap);
-                        break;
-                    case 4:
-                        myLVitem.img.setImageResource(R.drawable.trapreverse);
-                        break;
-                    case 5:
-                        myLVitem.img.setImageResource(R.drawable.nonbinary);
-                        break;
-                }
-
-
-                color = Color.rgb(ItemList.get(position).RedProgress,ItemList.get(position).GreenProgress,ItemList.get(position).BlueProgress);
-                myLVitem.Color.setBackgroundColor(color);
-
-
-                listitemView.setOnLongClickListener(new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        Toast.makeText(getApplicationContext(),"Usunąłeś: "+ ItemList.get(position).name,Toast.LENGTH_LONG).show();
-                        ItemList.remove(position);
-                        SaveList();
-                        notifyDataSetChanged();
-                        return true;
-
-                    }
-                });
-
-
-                listitemView.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Lista.this, OpenItem.class);
-
-                        intent.putExtra("name", ItemList.get(position).name);
-                        intent.putExtra("number", ItemList.get(position).number);
-                        intent.putExtra("age", ItemList.get(position).age);
-                        intent.putExtra("redprogress", ItemList.get(position).RedProgress);
-                        intent.putExtra("blueprogress", ItemList.get(position).BlueProgress);
-                        intent.putExtra("greenProgress", ItemList.get(position).GreenProgress);
-                        intent.putExtra("gender", ItemList.get(position).gender);
-                        intent.putExtra("rating",ItemList.get(position).rating);
-                        intent.putExtra("position",position);
-
-                        startActivityForResult(intent, 2);
-                        Toast.makeText(getApplicationContext(),"Wybrałeś: "+ ItemList.get(position).name,Toast.LENGTH_LONG).show();
-
-                    }
-                });
-
-
-
-                return listitemView;
-            }
-        }
-
-        */
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {

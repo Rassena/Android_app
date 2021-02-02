@@ -35,7 +35,7 @@ import java.util.ArrayList;
  * Use the {@link Options_f1#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Lista_f1 extends Fragment {
+public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -45,10 +45,15 @@ public class Lista_f1 extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    MyAdapter adapter;
+    public MyAdapter adapter;
     ListView lista;
     ArrayList<ListElement> ItemList;
     private int color;
+
+    @Override
+    public void onOpenInputSent(Bundle bundle) {
+        adapter.notifyDataSetChanged();
+    }
 
     public interface ListFragmentListener {
         void onListInputSent(Bundle bundle);
@@ -248,6 +253,7 @@ public class Lista_f1 extends Fragment {
     }
 
 
+    
     public void onStart(){
         super.onStart();
         LoadData();
@@ -263,7 +269,9 @@ public class Lista_f1 extends Fragment {
         LoadData();
         adapter = new MyAdapter(ItemList);
         lista = (ListView) getActivity().findViewById(R.id.listView);
-    //    lista.setAdapter(adapter);
+        //lista.setAdapter(adapter);
+        //adapter.notifyDataSetChanged();
+
     }
 
     @Override
