@@ -5,6 +5,7 @@ import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.cwiczenie_3_4.ItemData;
 
@@ -23,6 +24,9 @@ public interface MyDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     void insert(ItemData item);
+
+    @Update
+
 
     @Delete
     void delete(ItemData item);

@@ -242,7 +242,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 //myListFragment.setList(getRepositoryList());
 
 
-                SaveList();
+                //SaveList();
             }
         }
     }
@@ -252,7 +252,17 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     }
 
+    @Override
+    public void sentToInputSent(ItemData item) {
+
+    }
+
     public List<ItemData> getRepositoryList(){
         return myRepository.getDataList();
+    }
+
+    @Override
+    public void sentToInputchose(ItemData itemData) {
+
     }
 }

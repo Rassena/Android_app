@@ -1,37 +1,27 @@
 package com.example.cwiczenie_3_4;
 
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.RatingBar;
-import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MyRVAdapter extends RecyclerView.Adapter<MyRVAdapter.MyViewHolder> {
     
     private List<ItemData> mList;
     private final Lista_f1.ListFragmentInteractionListener mListener;
-    
+
     
     public MyRVAdapter(Lista_f1.ListFragmentInteractionListener listener){
         mListener = listener;
     }
 
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_lista_f1,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.list_row,parent,false);
         return new MyViewHolder(view);
     }
 
@@ -64,6 +54,21 @@ public class MyRVAdapter extends RecyclerView.Adapter<MyRVAdapter.MyViewHolder> 
 
         int color = android.graphics.Color.rgb(mList.get(position).redProgress,mList.get(position).greenProgress,mList.get(position).blueProgress);
         holder.colorv.setBackgroundColor(color);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mListener.sentToInputchose(mList.get(position));
+            }
+        });
+        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mListener.onDeleteItem(mList.get(position));
+                return true;
+            }
+        });
+
     }
 
 
@@ -78,6 +83,10 @@ public class MyRVAdapter extends RecyclerView.Adapter<MyRVAdapter.MyViewHolder> 
     void setItemList(List<ItemData>list){
         mList = list;
         notifyDataSetChanged();
+    }
+
+    public ItemData getItemAt(int position){
+        return mList.get(position);
     }
 
 
@@ -98,10 +107,6 @@ public class MyRVAdapter extends RecyclerView.Adapter<MyRVAdapter.MyViewHolder> 
              colorv = view.findViewById(R.id.view_Row);
             
         }
-
-
-
-
 
     }
 

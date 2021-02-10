@@ -1,5 +1,6 @@
 package com.example.cwiczenie_3_4;
 
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,6 +11,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -52,16 +54,16 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
     ListView lista;
     ArrayList<ListElement> ItemList;
     private int color;
+    static MyRepository myRepository;
 
 
     private ListFragmentInteractionListener mListener;
-    private RecyclerView getmRecyclerView;
     private MyRVAdapter mAdapter;
 
 
     @Override
     public void onOpenInputSent(Bundle bundle) {
-        adapter.notifyDataSetChanged();
+        mAdapter.notifyDataSetChanged();
     }
 
     public interface ListFragmentListener {
@@ -70,7 +72,9 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
 
     public interface ListFragmentInteractionListener{
         void onDeleteItem(ItemData item);
+        void sentToInputSent(ItemData item);
         List<ItemData> getRepositoryList();
+        void sentToInputchose(ItemData itemData);
     }
 
     void setList(List<ItemData>list){
@@ -80,7 +84,6 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
 
     private ListFragmentListener listener;
     private RecyclerView mRecyclerView;
-    private MyRVAdapter myRVAdapter;
 
 
 
@@ -238,6 +241,11 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
         }
     }
 
+
+
+
+
+
     public Lista_f1() {
         // Required empty public constructor
     }
@@ -279,17 +287,35 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
             mRecyclerView = (RecyclerView) view;
             mRecyclerView.setLayoutManager((new LinearLayoutManager(context)));
         }
+
         return view;
     }
 
 
     public void onActivityCreated(@Nullable Bundle saverdInstanceState) {
         super.onActivityCreated(saverdInstanceState);
+        myRepository = new MyRepository((Application)getActivity().getApplicationContext());
         mRecyclerView = getActivity().findViewById(R.id.listView);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         mAdapter =new MyRVAdapter(mListener);
         mRecyclerView.setAdapter(mAdapter);
         setList(mListener.getRepositoryList());
+
+
+        /*
+        new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(0,ItemTouchHelper.LEFT|ItemTouchHelper.RIGHT){
+            @Override
+            public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target) {
+                return false;
+            }
+
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+                myRepository.deleteItem(mAdapter.getItemAt(viewHolder.getAdapterPosition()));
+            }
+        }).attachToRecyclerView(mRecyclerView);
+         */
+
     }
 
 
@@ -305,13 +331,19 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
      */
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        LoadData();
-        adapter = new MyAdapter(ItemList);
         lista = (ListView) getActivity().findViewById(R.id.listView);
         //lista.setAdapter(adapter);
         //lista.setAdapter(adapter);
         //adapter.notifyDataSetChanged();
+
+
 
     }
 
