@@ -115,7 +115,8 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
         LoadData();
         adapter.notifyDataSetChanged();
          */
-        itemList_sql.set(elemposition,Element);
+        //itemList_sql.set(elemposition,Element);
+        myRepository.updateItem(Element);
 
 
     }
@@ -312,6 +313,7 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
                 Element.redProgress = data.getIntExtra("redprogress", 0);
                 Element.greenProgress = data.getIntExtra("greenprogress", 0);
                 Element.rating = data.getFloatExtra("rating", 0);
+                Element.id = data.getIntExtra("id",0);
 
                 switch (data.getIntExtra("gender", 0)) {
                     case R.id.radioButtonWomen:
@@ -337,7 +339,8 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
                 //ItemList.add(Element);
                 //itemList_sql.add(Element);
                 //SaveList();
-                myRepository.insertItem(Element);
+                //myRepository.insertItem(Element);
+                myRepository.updateItem(Element);
 
             }
         }
@@ -351,6 +354,7 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
                 Element.redProgress = data.getIntExtra("redprogress", 0);
                 Element.greenProgress = data.getIntExtra("greenprogress", 0);
                 Element.rating = data.getFloatExtra("rating", 0);
+                Element.id = data.getIntExtra("id",0);
                 int test = data.getIntExtra("gender",0);
                 switch (test) {
                     case R.id.radioButtonWomen_open:
@@ -374,8 +378,9 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
                 }
                 //ItemList.set(elemposition, Element);
                 //itemList_sql.set(elemposition, Element);
-                itemList_sql.add(Element);
-                SaveList();
+                myRepository.updateItem(Element);
+                myRepository.insertItem(Element);
+                //SaveList();
 
             }
         }

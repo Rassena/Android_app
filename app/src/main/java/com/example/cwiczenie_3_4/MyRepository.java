@@ -27,4 +27,6 @@ public class MyRepository {
     void deleteItem(ItemData item){
         myDao.delete(item);
     }
+
+    void updateItem(ItemData item) {myDao.update(item);}
 }

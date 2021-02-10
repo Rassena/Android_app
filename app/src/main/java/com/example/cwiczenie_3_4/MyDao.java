@@ -26,7 +26,7 @@ public interface MyDao {
     void insert(ItemData item);
 
     @Update
-
+    void update(ItemData item);
 
     @Delete
     void delete(ItemData item);
