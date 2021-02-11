@@ -30,6 +30,14 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textView15"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="id" />
+
+                    <TextView
                         android:id="@+id/textView2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -60,10 +68,19 @@
                     android:layout_weight="1"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/Id_Open"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Id" />
+
                     <EditText
                         android:id="@+id/Name_Open"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
                         android:ems="10"
                         android:gravity="center"
                         android:inputType="textPersonName"
@@ -73,6 +90,7 @@
                         android:id="@+id/Number_Open"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:ems="10"
                         android:gravity="center"
                         android:inputType="phone"
@@ -82,6 +100,7 @@
                         android:id="@+id/Age_Open"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_weight="1"
                         android:ems="10"
                         android:gravity="center"
                         android:inputType="phone"

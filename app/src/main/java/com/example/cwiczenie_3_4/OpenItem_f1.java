@@ -57,6 +57,7 @@ public class OpenItem_f1 extends Fragment {
     private RatingBar rb;
 
     private int color;
+    private TextView idView;
     private EditText NameView;
     private EditText NumberView;
     private EditText AgeView;
@@ -64,6 +65,9 @@ public class OpenItem_f1 extends Fragment {
     int gender;
 
     private OpenItemListener listener;
+    private Lista_f1.ListFragmentInteractionListener mListener;
+    private MyRVAdapter mAdapter =new MyRVAdapter(mListener);
+
 
     public interface OpenItemListener {
         void onOpenInputSent(Bundle bundle);
@@ -126,6 +130,7 @@ public class OpenItem_f1 extends Fragment {
 
         viewV = (View) view.findViewById(R.id.ColorView_open);
 
+        idView = (TextView) view.findViewById(R.id.Id_Open);
         NameView = (EditText) view.findViewById(R.id.Name_Open);
         NumberView = (EditText) view.findViewById(R.id.Number_Open);
         AgeView = (EditText) view.findViewById(R.id.Age_Open);
@@ -137,6 +142,7 @@ public class OpenItem_f1 extends Fragment {
         NameView.setText(intent.getStringExtra("name"));
         NumberView.setText(intent.getStringExtra("number"));
         AgeView.setText(intent.getStringExtra("age"));
+        idView.setText(intent.getStringExtra("id"));
 
         RecordPosition = intent.getIntExtra("position", 0);
 
@@ -266,8 +272,6 @@ public class OpenItem_f1 extends Fragment {
     public void modify_f(View view) {
         Bundle bundle = new Bundle();
 
-
-
         bundle.putString("name", NameView.getText().toString());
         bundle.putString("number", NumberView.getText().toString());
         bundle.putString("age", AgeView.getText().toString());
@@ -278,9 +282,11 @@ public class OpenItem_f1 extends Fragment {
         bundle.putInt("gender", test);
         bundle.putFloat("rating", rb.getRating());
         bundle.putInt("position", RecordPosition);
+        bundle.putInt("id", Integer.parseInt(idView.getText().toString()));
 
         listener.onOpenInputSent(bundle);
         Toast.makeText(getActivity().getApplicationContext(), "Zapisano zmiany", Toast.LENGTH_SHORT).show();
+        mAdapter.notifyDataSetChanged();
     }
 
 

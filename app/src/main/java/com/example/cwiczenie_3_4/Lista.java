@@ -1,20 +1,13 @@
 package com.example.cwiczenie_3_4;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.ListFragment;
 
-import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -26,10 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -59,6 +49,7 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
     private EditText NameView;
     private EditText NumberView;
     private EditText AgeView;
+    private TextView IdView;
     private int RecordPosition;
     int gender;
     ArrayList<ListElement> ItemList;
@@ -75,10 +66,10 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
         //ListView lista = (ListView) findViewById(R.id.listView);
 
         itemList_sql = getRepositoryList();
-        int elemposition = bundle.getInt("position", 0);
+        int elemposition = bundle.getInt("id", 0);
 
         //ListElement Element = ItemList.get(elemposition);
-        ItemData Element = itemList_sql.get(elemposition);
+        ItemData Element = itemList_sql.get(elemposition-1);
 
 
         Element.name = bundle.getString("name");
@@ -117,7 +108,7 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
          */
         //itemList_sql.set(elemposition,Element);
         myRepository.updateItem(Element);
-
+        myListFragment.setList(getRepositoryList());
 
     }
 
@@ -296,7 +287,8 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
     public void uruchomAdd(View view){
         final Intent intencja = new Intent(this, Add.class);
         startActivityForResult(intencja,1);
-
+        mAdapter.notifyDataSetChanged();
+        myListFragment.setList(getRepositoryList());
     }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -339,8 +331,11 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
                 //ItemList.add(Element);
                 //itemList_sql.add(Element);
                 //SaveList();
-                //myRepository.insertItem(Element);
-                myRepository.updateItem(Element);
+                myRepository.insertItem(Element);
+                //myRepository.updateItem(Element);
+                mAdapter.notifyDataSetChanged();
+                myListFragment.setList(getRepositoryList());
+
 
             }
         }
@@ -379,8 +374,10 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
                 //ItemList.set(elemposition, Element);
                 //itemList_sql.set(elemposition, Element);
                 myRepository.updateItem(Element);
-                myRepository.insertItem(Element);
+                //myRepository.insertItem(Element);
+                mAdapter.notifyDataSetChanged();
                 //SaveList();
+                myListFragment.setList(getRepositoryList());
 
             }
         }
@@ -422,6 +419,10 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
         myListFragment.setList(getRepositoryList());
     }
 
+    public void onResume() {
+        super.onResume();
+        mAdapter.notifyDataSetChanged();
+    }
 
     public void sentToInputSent(ItemData item) {
 
@@ -439,6 +440,7 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
         NameView = (EditText) findViewById(R.id.Name_Open);
         NumberView = (EditText) findViewById(R.id.Number_Open);
         AgeView = (EditText) findViewById(R.id.Age_Open);
+        IdView =(TextView) findViewById(R.id.Id_Open);
 
         rg = (RadioGroup) findViewById(R.id.radiogroup_open);
 
@@ -447,6 +449,7 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
         NameView.setText(item.name);
         NumberView.setText(item.number);
         AgeView.setText(item.age);
+        IdView.setText(String.valueOf(item.id));
 
         RecordPosition = item.id;
 
@@ -508,9 +511,12 @@ public class Lista extends AppCompatActivity implements OpenItem_f1.OpenItemList
         intent.putExtra("gender", item.gender);
         intent.putExtra("rating", item.rating);
         intent.putExtra("position", item.id);
+        intent.putExtra("id", item.id);
 
         startActivityForResult(intent, 2);
         Toast.makeText(getApplicationContext(), " F Wybrałeś: " + item.name, Toast.LENGTH_LONG).show();
+        myListFragment.setList(getRepositoryList());
+
     }
 
 

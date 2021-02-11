@@ -103,6 +103,7 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
         int GreenProgress;
         int BlueProgress;
         int gender;
+        int id;
         float rating;
 
         public ListElement()
@@ -203,6 +204,8 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
                     if (getResources().getConfiguration().orientation == 1) {
                         Intent intent = new Intent(getActivity(), OpenItem.class);
 
+                        List<ItemData> itemList_sql = mListener.getRepositoryList();
+
                         intent.putExtra("name", ItemList.get(position).name);
                         intent.putExtra("number", ItemList.get(position).number);
                         intent.putExtra("age", ItemList.get(position).age);
@@ -212,9 +215,11 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
                         intent.putExtra("gender", ItemList.get(position).gender);
                         intent.putExtra("rating", ItemList.get(position).rating);
                         intent.putExtra("position", position);
+                        intent.putExtra("id",ItemList.get(position).id);
 
                         startActivityForResult(intent, 2);
                         Toast.makeText(getActivity().getApplicationContext(), " F Wybrałeś: " + ItemList.get(position).name, Toast.LENGTH_LONG).show();
+                        notifyDataSetChanged();
                     }
                     else
                     {
@@ -229,9 +234,11 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
                         bundle.putInt("gender", ItemList.get(position).gender);
                         bundle.putFloat("rating", ItemList.get(position).rating);
                         bundle.putInt("position", position);
+                        bundle.putInt("id",ItemList.get(position).id);
                         Toast.makeText(getActivity().getApplicationContext(), "Kliknalles: " + ItemList.get(position).name, Toast.LENGTH_LONG).show();
 
                         listener.onListInputSent(bundle);
+                        notifyDataSetChanged();
                     }
 
                 }
@@ -334,6 +341,7 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
     public void onResume() {
         super.onResume();
         mAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -383,6 +391,7 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
                 }
 
                 ItemList.add(Element);
+                mAdapter.notifyDataSetChanged();
                 SaveList();
             }
         }
@@ -418,6 +427,7 @@ public class Lista_f1 extends Fragment implements OpenItem_f1.OpenItemListener{
                         break;
                 }
                 ItemList.set(elemposition, Element);
+                mAdapter.notifyDataSetChanged();
                 SaveList();
 
             }

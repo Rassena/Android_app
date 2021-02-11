@@ -36,6 +36,7 @@ public class OpenItem extends AppCompatActivity {
     private RatingBar rb;
 
     private int color;
+    private TextView IdView;
     private EditText NameView;
     private EditText NumberView;
     private EditText AgeView;
@@ -64,6 +65,7 @@ public class OpenItem extends AppCompatActivity {
         NameView = (EditText) findViewById(R.id.Name_Open);
         NumberView = (EditText) findViewById(R.id.Number_Open);
         AgeView = (EditText) findViewById(R.id.Age_Open);
+        IdView = (TextView) findViewById(R.id.Id_Open);
 
         rg = (RadioGroup) findViewById(R.id.radiogroup_open);
 
@@ -72,6 +74,11 @@ public class OpenItem extends AppCompatActivity {
         NameView.setText(intent.getStringExtra("name"));
         NumberView.setText(intent.getStringExtra("number"));
         AgeView.setText(intent.getStringExtra("age"));
+
+        ((TextView)findViewById(R.id.textView9)).setText("lololo");
+
+        int test = intent.getIntExtra("id",0);
+        IdView.setText(String.valueOf(test));
 
         RecordPosition = intent.getIntExtra("position", 0);
 
@@ -196,6 +203,7 @@ public class OpenItem extends AppCompatActivity {
         resultIntent.putExtra("gender", test);
         resultIntent.putExtra("rating", rb.getRating());
         resultIntent.putExtra("position", RecordPosition);
+        resultIntent.putExtra("id",Integer.parseInt(IdView.getText().toString()));
 
         setResult(RESULT_OK, resultIntent);
         Toast.makeText(getApplicationContext(), "Zapisano zmiany", Toast.LENGTH_SHORT).show();
